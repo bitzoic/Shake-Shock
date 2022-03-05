@@ -22,6 +22,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int startGameWaitTime;
 
+    [Header("Debug")]
+    [SerializeField]
+    private bool autoStart;
+    [SerializeField]
+    private Player debugPlayer;
+
     #endregion
 
     #region Run-Time Fields
@@ -35,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (main != null)
+        if (main == null)
         {
             main = this;
         }
@@ -54,8 +60,16 @@ public class GameManager : MonoBehaviour
         // TODO:
         // Some NFT stuff here??? Who is playing!!!!
 
-
-        StartCoroutine(WaitToStartGame());
+        if (!autoStart)
+        {
+            
+            StartCoroutine(WaitToStartGame());
+        }
+        else
+        {
+            isRunning = true;
+            debugPlayer.SetGameRunning(true);
+        }
     }
 
     #endregion

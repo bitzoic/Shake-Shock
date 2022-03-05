@@ -10,6 +10,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    #region Inspector Fields
+
+    [Header("Dependencies")]
+    [SerializeField]
+    private Rigidbody2D playerRigidbody2D;
+    [SerializeField]
+    private GameObject playerGameObject;
+    [SerializeField]
+    private Transform playerTransform;
+
+    #endregion
+
+    #region Run-Time Fields
+
+    private bool isGameRunning = false;
+    private bool onGround = false;
+    private int directionFacing = -1;
+
+    #endregion
 
     #region Monobehaviors
 
@@ -22,8 +41,58 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+
+    #endregion
+
+    #region Public Methods
+
+    public void SetGameRunning(bool status)
+    {
+        isGameRunning = status;
+    }
+
+    public Rigidbody2D GetRigidbody2D()
+    {
+        return playerRigidbody2D;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return playerGameObject;
+    }
+
+    public Transform GetTransform()
+    {
+        return playerTransform;
+    }
+
+    public bool GetOnGround()
+    {
+        return onGround;
+    }
+
+    public void SetOnGround(bool status)
+    {
+        onGround = status;
+    }
+
+    public void SetDirectionFacing(int direction)
+    {
+        directionFacing = direction;
+    }
+
+    public int GetDirectionFacing()
+    {
+        return directionFacing;
+    }
+
+    #endregion
+
+    #region Private Methods
+
+
 
     #endregion
 }
