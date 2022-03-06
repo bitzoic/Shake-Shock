@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5161004016834191104}
   - component: {fileID: 5161004016834191105}
   - component: {fileID: 5161004016834191111}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5161004017562022818}
   - component: {fileID: 5161004017562022819}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   m_FlipX: 0
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 5161004017801417862}
   - component: {fileID: 5161004017801417856}
   - component: {fileID: 5161004017801417857}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -347,14 +347,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 5161004017801417862}
-  moveMinMultiplier: 80
+  moveMinMultiplier: 130
   moveMaxMultiplier: 200
   moveRate: 20
   moveResetThreshold: 3
   strafeMultiplier: 1500
   strafeButtonTime: 0.2
   strafeCoolDownTime: 1
-  jumpMaxMuliplier: 3000
+  jumpMaxMuliplier: 3500
   doubleJumpWaitTime: 0.05
 --- !u!114 &5161004017801417857
 MonoBehaviour:
