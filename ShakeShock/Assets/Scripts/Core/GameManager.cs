@@ -18,13 +18,17 @@ public class GameManager : MonoBehaviour
 
     #region Inspector Fields
 
+    [Header("Dependencies")]
+    [SerializeField]
+    private CameraFollow cameraFollow;
+
     [Header("General Settings")]
     [SerializeField]
     private int startGameWaitTime;
 
     [Header("Debug")]
     [SerializeField]
-    private bool autoStart;
+    private bool debugMode;
     [SerializeField]
     private Player debugPlayer;
 
@@ -60,14 +64,15 @@ public class GameManager : MonoBehaviour
         // TODO:
         // Some NFT stuff here??? Who is playing!!!!
 
-        if (!autoStart)
+        if (!debugMode)
         {
-            
             StartCoroutine(WaitToStartGame());
         }
         else
         {
             isRunning = true;
+            players.Add(debugPlayer);
+            SetCameraTargets();
             debugPlayer.SetGameRunning(true);
         }
     }
@@ -99,6 +104,14 @@ public class GameManager : MonoBehaviour
     {
         // Do stuff here to start the game
         isRunning = true;
+    }
+
+    private void SetCameraTargets()
+    {
+        foreach (Player player in players)
+        {
+            cameraFollow.AddToTargetList(player.GetTransform());
+        }
     }
 
     #endregion
