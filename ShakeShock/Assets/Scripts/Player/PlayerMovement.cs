@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     #region Run-Time Fields
 
     private bool didDoubleJump = false;
+    private bool didJump = false;
     private bool jumpReleased = false;
 
     private int currentDirectionMovementMultiplier = 0;
@@ -90,9 +91,10 @@ public class PlayerMovement : MonoBehaviour
 
     #region Public methods
 
-    public void ResetDoubleJump()
+    public void ResetJump()
     {
         didDoubleJump = false;
+        didJump = false;
     }
 
     #endregion
@@ -260,14 +262,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if ((!player.GetOnGround() && didDoubleJump == true) 
-            || (!player.GetOnGround() && jumpReleased == false)
+        if ((!player.GetIsOnGround() && didDoubleJump == true) 
+            || (!player.GetIsOnGround() && jumpReleased == false && didJump == true)
             || Time.time - jumpedTime < doubleJumpWaitTime)
         {
             return;
         }
 
-        if (!player.GetOnGround() && didDoubleJump == false)
+        if (!player.GetIsOnGround() && didDoubleJump == false && didJump == true)
         {
             didDoubleJump = true;
         }
@@ -275,6 +277,7 @@ public class PlayerMovement : MonoBehaviour
         player.GetRigidbody2D().AddForce(player.GetTransform().up * jumpMaxMuliplier);
         jumpedTime = Time.time;
         jumpReleased = false;
+        didJump = true;
     }
 
 #endregion

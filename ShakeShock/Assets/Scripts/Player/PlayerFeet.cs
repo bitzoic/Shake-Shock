@@ -27,7 +27,7 @@ public class PlayerFeet : MonoBehaviour
         if (collision.tag == "ground")
         {
             player.SetOnGround(true);
-            playerMovement.ResetDoubleJump();
+            playerMovement.ResetJump();
         }
     }
 

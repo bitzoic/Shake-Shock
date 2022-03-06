@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         return playerTransform;
     }
 
-    public bool GetOnGround()
+    public bool GetIsOnGround()
     {
         return onGround;
     }
