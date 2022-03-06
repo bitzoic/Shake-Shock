@@ -107,13 +107,13 @@ public class PlayerMovement : MonoBehaviour
             currentDirectionMovementMultiplier = -1;
         }
         // Move right
-        else if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             MoveRight();
             currentDirectionMovementMultiplier = 1;
         }
         // If we are moving below a threshold then reset the moving multiplier
-        else if (Mathf.Abs(player.GetRigidbody2D().velocity.x) < moveResetThreshold)
+        if (Mathf.Abs(player.GetRigidbody2D().velocity.x) < moveResetThreshold)
         {
             currentDirectionMovementMultiplier = 0;
         }
@@ -121,7 +121,36 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessDirection()
     {
-        player.SetDirectionFacing(lastDirection);
+        bool aPressed = false;
+        bool dPressed = false;
+        if (Input.GetKey(KeyCode.A))
+        {
+            aPressed = true;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            dPressed = true;
+        }
+
+        if (aPressed && !dPressed)
+        {
+            player.SetDirectionFacing(-1);
+        }
+        else if (!aPressed && dPressed)
+        {
+            player.SetDirectionFacing(1);
+        }
+        else if (aPressed && dPressed)
+        {
+            if (player.GetRigidbody2D().velocity.x > 0)
+            {
+                player.SetDirectionFacing(1);
+            }
+            else if (player.GetRigidbody2D().velocity.x < 0)
+            {
+                player.SetDirectionFacing(-1);
+            }
+        }
     }
 
     private void ProcessStrafing()
