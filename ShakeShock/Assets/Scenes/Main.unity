@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 590466632}
   - component: {fileID: 590466631}
   - component: {fileID: 590466633}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground
   m_TagString: ground
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 826151842}
   - component: {fileID: 826151841}
   - component: {fileID: 826151840}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.8867924, g: 0.49728534, b: 0.15393375, a: 1}
   m_FlipX: 0
@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 1048387206}
   - component: {fileID: 1048387205}
   - component: {fileID: 1048387208}
+  - component: {fileID: 1048387209}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -449,9 +450,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1048387206}
-  dampTime: 0.2
-  screenEdgeBuffer: 4
-  minCameraSize: 100
+  dampTime: 0.7
+  screenEdgeBuffer: 5
+  minCameraSize: 10
+--- !u!114 &1048387209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048387204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49221be96982f94d930d154616f3bf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 1048387207}
+  distortion: 0.2
+  xDirection: 1
+  yDirection: 1
+  zDirection: 1
+  wDirection: 1
+  debugTest: 0
+  debugIntensity: 0.1
+  debugLength: 0.001
 --- !u!1 &1462587190
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,9 +590,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5161004016834191109, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5161004017562022817, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5161004017562022819, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5161004017801417913, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5161004017801417913, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5161004017801417915, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: m_RootOrder
