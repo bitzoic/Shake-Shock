@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField]
     private CameraFollow cameraFollow;
+    [SerializeField]
+    private GameObject debugGameObject;
 
     [Header("General Settings")]
     [SerializeField]
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour
 
         if (!debugMode)
         {
+            debugGameObject.SetActive(false);
             StartCoroutine(WaitToStartGame());
         }
         else
