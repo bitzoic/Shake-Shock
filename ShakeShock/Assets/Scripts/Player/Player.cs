@@ -19,12 +19,19 @@ public class Player : MonoBehaviour
     private GameObject playerGameObject;
     [SerializeField]
     private Transform playerTransform;
+    [SerializeField]
+    private Collider2D playerCollider;
+
+    [Header("Settings")]
+    [SerializeField]
+    private float disableTime;
 
     #endregion
 
     #region Run-Time Fields
 
     private bool isGameRunning = false;
+    private bool allowInput = true;
     private bool onGround = false;
     private int directionFacing = -1;
 
@@ -38,10 +45,16 @@ public class Player : MonoBehaviour
         // Load all NFT data here
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-
+        if (collision.gameObject.tag == "ElectricOrb")
+        {
+            if (allowInput == true)
+            {
+                allowInput = false;
+                StartCoroutine(ReEnableControls());
+            }
+        }
     }
 
     #endregion
@@ -88,11 +101,31 @@ public class Player : MonoBehaviour
         return directionFacing;
     }
 
+    public Collider2D GetCollider2D()
+    {
+        return playerCollider;
+    }
+
+    public bool GetAllowInput()
+    {
+        return allowInput;
+    }
+
     #endregion
 
     #region Private Methods
 
 
+
+    #endregion
+
+    #region Coroutines
+
+    private IEnumerator ReEnableControls()
+    {
+        yield return new WaitForSeconds(disableTime);
+        allowInput = true;
+    }
 
     #endregion
 }

@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (GameManager.main.IsGameRunning())
+        if (GameManager.main.IsGameRunning() && player.GetAllowInput())
         {
             ProcessStrafing();
             ProcessJump();
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (GameManager.main.IsGameRunning())
+        if (GameManager.main.IsGameRunning() && player.GetAllowInput())
         {
             ProcessMovement();
         }
