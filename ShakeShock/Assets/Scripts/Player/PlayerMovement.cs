@@ -34,12 +34,18 @@ public class PlayerMovement : MonoBehaviour
     private float strafeButtonTime;
     [SerializeField]
     private float strafeCoolDownTime;
+    [SerializeField]
+    private float trailTime;
+    [SerializeField]
+    private int trailEmissionRate;
 
     [Header("Jumping")]
     [SerializeField]
     private float jumpMaxMuliplier;
     [SerializeField]
     private float doubleJumpWaitTime;
+    [SerializeField]
+    private int doubleJumpParticleCount;
 
     #endregion
 
@@ -196,6 +202,7 @@ public class PlayerMovement : MonoBehaviour
         {
             player.GetRigidbody2D().AddForce(player.GetTransform().right * -strafeMultiplier);
             strafeUsedTime = Time.time;
+            EnableTrail();
         }
         else
         {
@@ -216,6 +223,7 @@ public class PlayerMovement : MonoBehaviour
         {
             player.GetRigidbody2D().AddForce(player.GetTransform().right * strafeMultiplier);
             strafeUsedTime = Time.time;
+            EnableTrail();
         }
         else
         {
@@ -272,6 +280,7 @@ public class PlayerMovement : MonoBehaviour
         if (!player.GetIsOnGround() && didDoubleJump == false && didJump == true)
         {
             didDoubleJump = true;
+            EnableDoubleJumpParticles();
         }
 
         player.GetRigidbody2D().AddForce(player.GetTransform().up * jumpMaxMuliplier);
@@ -280,5 +289,30 @@ public class PlayerMovement : MonoBehaviour
         didJump = true;
     }
 
-#endregion
+    private void EnableTrail()
+    {
+        player.GetTrailRenderer().time = trailTime;
+        player.GetTrailRenderer().emitting = true;
+        player.GetStrafeParticleSystem().emissionRate = trailEmissionRate;
+        StartCoroutine(DisableTrail());
+    }
+
+    private void EnableDoubleJumpParticles()
+    {
+        player.GetDoubleJumpParticleSystem().Emit(doubleJumpParticleCount);
+    }
+
+    #endregion
+
+
+    #region Coroutine
+
+    private IEnumerator DisableTrail()
+    {
+        yield return new WaitForSeconds(trailTime);
+        player.GetTrailRenderer().emitting = false;
+        player.GetStrafeParticleSystem().emissionRate = 0;
+    }
+
+    #endregion
 }
