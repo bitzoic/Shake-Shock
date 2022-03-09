@@ -2013,7 +2013,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d3ff3d1649febbd49a6238e26c5625d4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.52689266, b: 0, a: 0.6313726}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3591,7 +3591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129384204, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: offset
-      value: -0.85
+      value: -0.35
       objectReference: {fileID: 0}
     - target: {fileID: 1129384204, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: rangeX
@@ -3621,6 +3621,10 @@ PrefabInstance:
       propertyPath: coneGameObject
       value: 
       objectReference: {fileID: 1348667790}
+    - target: {fileID: 1129384204, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
+      propertyPath: offsetDistance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1129384204, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: angleRandomness
       value: 0.7
