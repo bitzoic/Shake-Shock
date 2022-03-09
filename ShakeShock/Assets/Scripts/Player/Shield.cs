@@ -19,6 +19,10 @@ public class Shield : MonoBehaviour
     private Collider2D shieldCollider;
     [SerializeField]
     private LineRenderer[] lineRenderers;
+    [SerializeField]
+    private GameObject coneGameObject;
+    [SerializeField]
+    private SpriteRenderer coneSprite;
 
     [Header("Settings")]
     [SerializeField]
@@ -26,11 +30,11 @@ public class Shield : MonoBehaviour
 
     [Header("Lightning")]
     [SerializeField]
-    private float rangeX;
-    [SerializeField]
-    private float rangeY;
+    private float range;
     [SerializeField]
     private float randomness;
+    [SerializeField]
+    private float angleRandomness;
     [SerializeField]
     private float offset;
     [SerializeField]
@@ -44,6 +48,7 @@ public class Shield : MonoBehaviour
 
     private Vector2 centerPoint;
     private bool shieldEnabled;
+    private int lastDirection;
     private int currentChange;
 
     #endregion
@@ -57,10 +62,12 @@ public class Shield : MonoBehaviour
         shieldEnabled = false;
         shieldCollider.enabled = false;
         shieldSprite.enabled = false;
+        coneSprite.enabled = false;
 
         foreach (LineRenderer line in lineRenderers)
         {
             line.positionCount = linePositions;
+            line.enabled = false;
         }
     }
 
@@ -105,14 +112,24 @@ public class Shield : MonoBehaviour
         shieldDirection.Normalize();
 
         float xPoint = centerPoint.x + (shieldDirection.x * offsetDistance * -player.GetDirectionFacing());
+        float xPointUniDir = centerPoint.x + (shieldDirection.x * offsetDistance);
         float yPoint = centerPoint.y + (shieldDirection.y * offsetDistance);
         float angle = Mathf.Atan2(-shieldDirection.y, -shieldDirection.x) * Mathf.Rad2Deg;
+        bool forceChange = false;
 
         MoveShield(shieldDirection, xPoint, yPoint, angle);
 
+        if (player.GetDirectionFacing() != lastDirection)
+        {
+            lastDirection = player.GetDirectionFacing();
+            forceChange = true;
+            FlipCone();
+        }
+
         if (currentChange == changeIntensity)
         {
-            ChangeLines(shieldDirection, xPoint, yPoint);
+            ChangeLines(shieldDirection, xPointUniDir, yPoint, forceChange);
+            forceChange = false;
             currentChange = 0;
         }
         else
@@ -123,12 +140,22 @@ public class Shield : MonoBehaviour
 
     private void ShowShield()
     {
-        shieldSprite.enabled = true;
+        //shieldSprite.enabled = true;
+        coneSprite.enabled = true;
+        foreach (LineRenderer line in lineRenderers)
+        {
+            line.enabled = true;
+        }
     }
 
     private void HideShield()
     {
         shieldSprite.enabled = false;
+        coneSprite.enabled = false;
+        foreach (LineRenderer line in lineRenderers)
+        {
+            line.enabled = false;
+        }
     }
 
     private void EnableShield()
@@ -141,45 +168,83 @@ public class Shield : MonoBehaviour
         shieldCollider.enabled = false;
     }
 
+    private void FlipCone()
+    {
+        coneGameObject.transform.localScale = new Vector3(
+            coneGameObject.transform.localScale.x * player.GetDirectionFacing(),
+            coneGameObject.transform.localScale.y,
+            coneGameObject.transform.localScale.z
+        );
+    }
+
     private void MoveShield(Vector2 shieldDirection, float xPoint, float yPoint, float angle)
     {
         shieldGameObject.transform.localPosition = new Vector2(xPoint, yPoint);
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        coneGameObject.transform.localPosition = new Vector2(xPoint, yPoint);
+        coneGameObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
-    private void ChangeLines(Vector2 shieldDirection, float xPoint, float yPoint)
+    private void ChangeLines(Vector2 shieldDirection, float xPoint, float yPoint, bool forceChange)
     {
         Vector2 perp = Vector2.Perpendicular(shieldDirection);
-
         foreach (LineRenderer line in lineRenderers)
         {
             int change = Random.value > 0.5 ? 0 : 1;
 
+            if (forceChange)
+            {
+                change = 1;
+            }
+
             if (change == 1)
             {
+                Vector2 newDir = new Vector2(
+                    shieldDirection.x + (Random.Range(-angleRandomness, angleRandomness) * perp.x),
+                    shieldDirection.y + (Random.Range(-angleRandomness, angleRandomness) * perp.y)
+                    );
+                newDir.Normalize();
+
                 float[] percentages = new float[linePositions];
                 float max = 0;
-                percentages[0] = -1;
+                percentages[0] = 0;
 
                 for (int i = 1; i < linePositions; i++)
                 {
-                    percentages[i] = Random.Range(-1, 1);
+                    percentages[i] = Random.Range(max, range);
                     if (percentages[i] > max)
                     {
                         max = percentages[i];
                     }
                 }
-                percentages[linePositions - 1] = 1;
+                percentages[linePositions - 1] = range;
 
-                for (int i = 0; i < line.positionCount; i++)
+                line.SetPosition(
+                    0, 
+                    new Vector2(
+                        (xPoint + (offset * shieldDirection.x)) * -player.GetDirectionFacing(), 
+                        (yPoint + (offset * shieldDirection.y))
+                        )
+                    );
+
+                for (int i = 1; i < line.positionCount - 1; i++)
                 {
                     Vector2 pos = new Vector2(
-                        xPoint + (percentages[i] * perp.x * rangeX  * Random.Range(-randomness, randomness)) + (offset * shieldDirection.x),
-                        yPoint + (percentages[i] * perp.y * rangeY  * Random.Range(-randomness, randomness)) + (offset * shieldDirection.y)
+                        (xPoint + (newDir.x * percentages[i]) + (Random.Range(-randomness, randomness) * perp.x * range) + (offset * shieldDirection.x)) * -player.GetDirectionFacing(),
+                        (yPoint + (newDir.y * percentages[i]) + (Random.Range(-randomness, randomness) * perp.y * range) + (offset * shieldDirection.y))
                         );
 
                     line.SetPosition(i, pos);
                 }
+
+                line.SetPosition(
+                    line.positionCount - 1, 
+                    new Vector2(
+                        (xPoint + (offset * shieldDirection.x) + (range * newDir.x)) * -player.GetDirectionFacing(), 
+                        (yPoint + (offset * shieldDirection.y) + (range * newDir.y))
+                        )
+                    );
             }
         }
     }
