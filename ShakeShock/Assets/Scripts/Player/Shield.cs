@@ -23,10 +23,22 @@ public class Shield : MonoBehaviour
     private GameObject coneGameObject;
     [SerializeField]
     private SpriteRenderer coneSprite;
+    [SerializeField]
+    private GameObject[] shieldWaveGameObjects;
+    [SerializeField]
+    private ParticleSystem shieldParticles;
 
     [Header("Settings")]
     [SerializeField]
     private float offsetDistance;
+    [SerializeField]
+    private int sheildParticlesRate;
+
+    [Header("Waves")]
+    [SerializeField]
+    private float expansionRate;
+    [SerializeField]
+    private float maxSize;
 
     [Header("Lightning")]
     [SerializeField]
@@ -63,6 +75,13 @@ public class Shield : MonoBehaviour
         shieldCollider.enabled = false;
         shieldSprite.enabled = false;
         coneSprite.enabled = false;
+        shieldParticles.emissionRate = 0;
+        lastDirection = 1;
+
+        foreach (GameObject wave in shieldWaveGameObjects)
+        {
+            wave.SetActive(false);
+        }
 
         foreach (LineRenderer line in lineRenderers)
         {
@@ -118,6 +137,7 @@ public class Shield : MonoBehaviour
         bool forceChange = false;
 
         MoveShield(shieldDirection, xPoint, yPoint, angle);
+        ExpandWaves();
 
         if (player.GetDirectionFacing() != lastDirection)
         {
@@ -126,7 +146,7 @@ public class Shield : MonoBehaviour
             FlipCone();
         }
 
-        if (currentChange == changeIntensity)
+        if (currentChange == changeIntensity || forceChange == true)
         {
             ChangeLines(shieldDirection, xPointUniDir, yPoint, forceChange);
             forceChange = false;
@@ -146,6 +166,13 @@ public class Shield : MonoBehaviour
         {
             line.enabled = true;
         }
+
+        foreach (GameObject wave in shieldWaveGameObjects)
+        {
+            wave.SetActive(true);
+        }
+
+        shieldParticles.emissionRate = sheildParticlesRate;
     }
 
     private void HideShield()
@@ -155,6 +182,25 @@ public class Shield : MonoBehaviour
         foreach (LineRenderer line in lineRenderers)
         {
             line.enabled = false;
+        }
+
+        foreach (GameObject wave in shieldWaveGameObjects)
+        {
+            wave.SetActive(false);
+        }
+
+        shieldParticles.emissionRate = 0;
+    }
+
+    private void ExpandWaves()
+    {
+        foreach (GameObject wave in shieldWaveGameObjects)
+        {
+            wave.transform.localScale += new Vector3(expansionRate, expansionRate, 0);
+            if (wave.transform.localScale.x > maxSize)
+            {
+                wave.transform.localScale = new Vector3(0, 0, 0);
+            }
         }
     }
 
@@ -171,7 +217,7 @@ public class Shield : MonoBehaviour
     private void FlipCone()
     {
         coneGameObject.transform.localScale = new Vector3(
-            coneGameObject.transform.localScale.x * player.GetDirectionFacing(),
+            -coneGameObject.transform.localScale.x,
             coneGameObject.transform.localScale.y,
             coneGameObject.transform.localScale.z
         );

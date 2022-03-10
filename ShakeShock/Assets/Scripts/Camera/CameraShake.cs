@@ -104,14 +104,6 @@ public class CameraShake : MonoBehaviour
             originRotation.z + (Random.Range(-shake_intensity, shake_intensity) * distortion) * (zDirection == true ? 1 : 0),
             originRotation.w + (Random.Range(-shake_intensity, shake_intensity) * distortion) * (wDirection == true ? 1 : 0));
 
-            /*
-            cameraTransform.rotation = new Quaternion(
-            originRotation.x + Random.Range(-0, 0) * .0f,
-            originRotation.y + Random.Range(-0, 0) * .0f,
-            originRotation.z + Random.Range(-shake_intensity, shake_intensity) * .2f,
-            originRotation.w + Random.Range(-shake_intensity, shake_intensity) * .2f);
-            */
-
             shake_intensity -= shake_decay;
             fixPos = true;
         }
