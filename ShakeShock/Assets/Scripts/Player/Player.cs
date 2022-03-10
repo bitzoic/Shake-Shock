@@ -21,6 +21,12 @@ public class Player : MonoBehaviour
     private Transform playerTransform;
     [SerializeField]
     private Collider2D playerCollider;
+    [SerializeField]
+    private TrailRenderer playerTrail;
+    [SerializeField]
+    private ParticleSystem playerStrafeParticles;
+    [SerializeField]
+    private ParticleSystem playerDoubleJumpParticles;
 
     [Header("Settings")]
     [SerializeField]
@@ -109,6 +115,21 @@ public class Player : MonoBehaviour
     public bool GetAllowInput()
     {
         return allowInput;
+    }
+
+    public TrailRenderer GetTrailRenderer()
+    {
+        return playerTrail;
+    }
+
+    public ParticleSystem GetStrafeParticleSystem()
+    {
+        return playerStrafeParticles;
+    }
+
+    public ParticleSystem GetDoubleJumpParticleSystem()
+    {
+        return playerDoubleJumpParticles;
     }
 
     #endregion
