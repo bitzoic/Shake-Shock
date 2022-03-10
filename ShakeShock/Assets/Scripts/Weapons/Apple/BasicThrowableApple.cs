@@ -15,8 +15,12 @@ public class BasicThrowableApple : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField]
     private GameObject parentThrowable;
+    [SerializeField]
+    private Throwable parentThrowableScript;
 
     [Header("Settings")]
+    [SerializeField]
+    private float damage;
     [SerializeField]
     private bool allowCollisions;
     [SerializeField]
@@ -44,7 +48,11 @@ public class BasicThrowableApple : MonoBehaviour
 
     public void OnCollisionEnterThrowable(Collision2D collision)
     {
-
+        if (collision.gameObject.tag == "Player" && parentThrowableScript.GetThrowPlayer() != collision.gameObject)
+        {
+            collision.gameObject.GetComponent<Player>().GetPlayerHealth().TakeDamage(damage);
+            Destroy(parentThrowable);
+        }
     }
 
     public void OnCollisionExitThrowable(Collision2D collision)

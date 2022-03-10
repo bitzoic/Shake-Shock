@@ -61,6 +61,7 @@ public class Throwable : MonoBehaviour
     private Vector2 throwDirection;
     private ThrowableType throwableType;
     private Coroutine decay;
+    private GameObject playerGameObject;
 
     #endregion
 
@@ -176,6 +177,16 @@ public class Throwable : MonoBehaviour
                 Debug.Log("ERROR: No throwable type defined");
                 break;
         }
+    }
+
+    public void SetThrowPlayer(GameObject player)
+    {
+        playerGameObject = player;
+    }
+
+    public GameObject GetThrowPlayer()
+    {
+        return playerGameObject;
     }
 
     #endregion

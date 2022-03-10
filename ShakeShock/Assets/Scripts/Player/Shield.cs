@@ -1,3 +1,9 @@
+// --------------------------------------------------------------
+// Shake Shock - Shield                                 3/07/2022
+// Author(s): Cameron Carstens
+// Contact: bitzoic.eth@gmail.com
+// --------------------------------------------------------------
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

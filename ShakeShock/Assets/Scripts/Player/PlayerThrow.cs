@@ -70,6 +70,7 @@ public class PlayerThrow : MonoBehaviour
             throwableScript.SetThrowableType(debugType);
             throwableScript.SetThrowForce(throwForce);
             throwableScript.SetThrowDirection(throwDirection);
+            throwableScript.SetThrowPlayer(player.GetGameObject());
         }
     }
 
