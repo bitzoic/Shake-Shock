@@ -16217,6 +16217,7 @@ GameObject:
   - component: {fileID: 5161004017801417862}
   - component: {fileID: 5161004017801417856}
   - component: {fileID: 1082629983}
+  - component: {fileID: 8491533882091209261}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -16321,6 +16322,7 @@ MonoBehaviour:
   playerTrail: {fileID: 1131393207}
   playerStrafeParticles: {fileID: 1964713799}
   playerDoubleJumpParticles: {fileID: 570372809}
+  playerHealthScript: {fileID: 8491533882091209261}
   disableTime: 1
 --- !u!114 &5161004017801417856
 MonoBehaviour:
@@ -16361,6 +16363,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 5161004017801417862}
   playerSprite: {fileID: 1070365101}
+--- !u!114 &8491533882091209261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5161004017801417913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2500615af4af04f8c5e5718ad15711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5933357531533555319
 GameObject:
   m_ObjectHideFlags: 0

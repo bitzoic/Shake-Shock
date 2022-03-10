@@ -38,6 +38,9 @@ public class Explosion : MonoBehaviour
     #region Run-Time Fields
 
     private float explosionSize;
+    private float damage;
+    private GameObject playerGameObject;
+    private List<GameObject> hitPlayers;
 
     #endregion
 
@@ -46,6 +49,7 @@ public class Explosion : MonoBehaviour
     private void Awake()
     {
         explosionTransform.localScale = new Vector3(0, 0, 0);
+        hitPlayers = new List<GameObject>();
     }
 
     // Start is called before the first frame update
@@ -62,6 +66,18 @@ public class Explosion : MonoBehaviour
         WaitForParticles();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && playerGameObject != collision.gameObject)
+        {
+            if (!hitPlayers.Contains(collision.gameObject))
+            {
+                collision.gameObject.GetComponent<Player>().GetPlayerHealth().TakeDamage(damage);
+                hitPlayers.Add(collision.gameObject);
+            }
+        }
+    }
+
     #endregion
 
     #region Public Methods
@@ -69,6 +85,20 @@ public class Explosion : MonoBehaviour
     public void SetExplosionSize(float size)
     {
         explosionSize = size;
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    public void SetDamage(float damage)
+    {
+        this.damage = damage;
+    }
+
+    public void SetPlayerGameobject(GameObject player)
+    {
+        playerGameObject = player;
     }
 
     #endregion

@@ -17,8 +17,12 @@ public class ElectricThrowableApple : MonoBehaviour
     private GameObject parentThrowable;
     [SerializeField]
     private GameObject explosionPrefab;
+    [SerializeField]
+    private Throwable parentThrowableScript;
 
     [Header("Settings")]
+    [SerializeField]
+    private float damage;
     [SerializeField]
     private bool allowCollisions;
     [SerializeField]
@@ -46,7 +50,11 @@ public class ElectricThrowableApple : MonoBehaviour
 
     public void OnCollisionEnterThrowable(Collision2D collision)
     {
-
+        if (collision.gameObject.tag == "Player" && parentThrowableScript.GetThrowPlayer() != collision.gameObject)
+        {
+            collision.gameObject.GetComponent<Player>().GetPlayerHealth().TakeDamage(damage);
+            Destroy(parentThrowable);
+        }
     }
 
     public void OnCollisionExitThrowable(Collision2D collision)

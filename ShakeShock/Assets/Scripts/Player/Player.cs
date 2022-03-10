@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     private ParticleSystem playerStrafeParticles;
     [SerializeField]
     private ParticleSystem playerDoubleJumpParticles;
+    [SerializeField]
+    private PlayerHealth playerHealthScript;
 
     [Header("Settings")]
     [SerializeField]
@@ -130,6 +132,11 @@ public class Player : MonoBehaviour
     public ParticleSystem GetDoubleJumpParticleSystem()
     {
         return playerDoubleJumpParticles;
+    }
+
+    public PlayerHealth GetPlayerHealth()
+    {
+        return playerHealthScript;
     }
 
     #endregion

@@ -97,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentThrowable: {fileID: 6168193738847571735}
   explosionPrefab: {fileID: 2270403880973497697, guid: c4a71479ad21c9d409a4a08d57a5989d, type: 3}
+  parentThrowableScript: {fileID: 6168193738847571732}
+  damage: 20
   allowCollisions: 0
   timeToExplode: 0.4
 --- !u!1 &2094892763
@@ -196,6 +198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentThrowable: {fileID: 6168193738847571735}
   explosionPrefab: {fileID: 1654481888401608, guid: 579d96db917f6b946a431e195679efbb, type: 3}
+  parentThrowableScript: {fileID: 6168193738847571732}
+  damage: 30
   allowCollisions: 0
   timeToExplode: 1
 --- !u!1 &6168193738847571735
@@ -406,5 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentThrowable: {fileID: 6168193738847571735}
+  parentThrowableScript: {fileID: 6168193738847571732}
+  damage: 10
   allowCollisions: 0
   lifeTime: 1

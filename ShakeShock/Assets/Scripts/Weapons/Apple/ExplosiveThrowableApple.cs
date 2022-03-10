@@ -17,8 +17,12 @@ public class ExplosiveThrowableApple : MonoBehaviour
     private GameObject parentThrowable;
     [SerializeField]
     private GameObject explosionPrefab;
+    [SerializeField]
+    private Throwable parentThrowableScript;
 
     [Header("Settings")]
+    [SerializeField]
+    private float damage;
     [SerializeField]
     private bool allowCollisions;
     [SerializeField]
@@ -70,7 +74,11 @@ public class ExplosiveThrowableApple : MonoBehaviour
 
     private void ExplodeApple()
     {
-        Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity);
+        GameObject explosion = Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity);
+        Explosion explosionScript = explosion.GetComponent<Explosion>();
+        explosionScript.SetDamage(damage);
+        explosionScript.SetPlayerGameobject(parentThrowableScript.GetThrowPlayer());
+
         Destroy(parentThrowable);
     }
 
