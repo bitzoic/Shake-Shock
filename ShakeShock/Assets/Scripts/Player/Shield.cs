@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shield : MonoBehaviour
 {
@@ -33,12 +34,28 @@ public class Shield : MonoBehaviour
     private GameObject[] shieldWaveGameObjects;
     [SerializeField]
     private ParticleSystem shieldParticles;
+    [SerializeField]
+    private Slider shieldSlider;
 
     [Header("Settings")]
     [SerializeField]
     private float offsetDistance;
     [SerializeField]
     private int sheildParticlesRate;
+    [SerializeField]
+    private float shakeIntensity;
+    [SerializeField]
+    private float shakeDecay;
+
+    [Header("Slider")]
+    [SerializeField]
+    private float maxShield;
+    [SerializeField]
+    private float shieldDecreaseRate;
+    [SerializeField]
+    private float shieldIncreaseRate;
+    [SerializeField]
+    private float shieldDisabletime;
 
     [Header("Waves")]
     [SerializeField]
@@ -66,8 +83,10 @@ public class Shield : MonoBehaviour
 
     private Vector2 centerPoint;
     private bool shieldEnabled;
+    private bool shieldBroken;
     private int lastDirection;
     private int currentChange;
+    private float currentShield;
 
     #endregion
 
@@ -83,6 +102,8 @@ public class Shield : MonoBehaviour
         coneSprite.enabled = false;
         shieldParticles.emissionRate = 0;
         lastDirection = 1;
+        currentShield = maxShield;
+        shieldBroken = false;
 
         foreach (GameObject wave in shieldWaveGameObjects)
         {
@@ -99,7 +120,7 @@ public class Shield : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1) && GameManager.main.IsGameRunning() && player.GetAllowInput())
+        if (Input.GetMouseButton(1) && GameManager.main.IsGameRunning() && player.GetAllowInput() && currentShield > 0)
         {
             ProcessInput();
         }
@@ -109,11 +130,15 @@ public class Shield : MonoBehaviour
             DisableShield();
             shieldEnabled = false;
         }
-    }
+        else
+        {
+            if (!shieldBroken)
+            {
+                IncreaseShield();
+            }
+        }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
+        UpdateSlider();
     }
 
     #endregion
@@ -144,6 +169,9 @@ public class Shield : MonoBehaviour
 
         MoveShield(shieldDirection, xPoint, yPoint, angle);
         ExpandWaves();
+        DecreaseShield();
+
+        CameraShake.main.ShakeCamera(shakeIntensity, shakeDecay);
 
         if (player.GetDirectionFacing() != lastDirection)
         {
@@ -162,6 +190,31 @@ public class Shield : MonoBehaviour
         {
             currentChange++;
         }
+    }
+
+    private void DecreaseShield()
+    {
+        currentShield -= Time.deltaTime * shieldDecreaseRate;
+        if (currentShield <= 0)
+        {
+            StartCoroutine(ShieldBroken());
+            shieldBroken = true;
+            currentShield = 0;
+        }
+    }
+
+    private void IncreaseShield()
+    {
+        currentShield += Time.deltaTime * shieldIncreaseRate;
+        if (currentShield >= maxShield)
+        {
+            currentShield = maxShield;
+        }
+    }
+
+    private void UpdateSlider()
+    {
+        shieldSlider.value = currentShield / maxShield;
     }
 
     private void ShowShield()
@@ -273,9 +326,9 @@ public class Shield : MonoBehaviour
                 percentages[linePositions - 1] = range;
 
                 line.SetPosition(
-                    0, 
+                    0,
                     new Vector2(
-                        (xPoint + (offset * shieldDirection.x)) * -player.GetDirectionFacing(), 
+                        (xPoint + (offset * shieldDirection.x)) * -player.GetDirectionFacing(),
                         (yPoint + (offset * shieldDirection.y))
                         )
                     );
@@ -291,9 +344,9 @@ public class Shield : MonoBehaviour
                 }
 
                 line.SetPosition(
-                    line.positionCount - 1, 
+                    line.positionCount - 1,
                     new Vector2(
-                        (xPoint + (offset * shieldDirection.x) + (range * newDir.x)) * -player.GetDirectionFacing(), 
+                        (xPoint + (offset * shieldDirection.x) + (range * newDir.x)) * -player.GetDirectionFacing(),
                         (yPoint + (offset * shieldDirection.y) + (range * newDir.y))
                         )
                     );
@@ -303,4 +356,13 @@ public class Shield : MonoBehaviour
 
     #endregion
 
+    #region Coroutine
+
+    private IEnumerator ShieldBroken()
+    {
+        yield return new WaitForSeconds(shieldDisabletime);
+        shieldBroken = false;
+    }
+
+    #endregion
 }
