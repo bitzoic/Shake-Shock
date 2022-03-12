@@ -143,6 +143,15 @@ public class Shield : MonoBehaviour
 
     #endregion
 
+    #region Public Methods
+
+    public void SetShieldTime(float val)
+    {
+        maxShield = val;
+    }
+
+    #endregion
+
     #region Private Methods
 
     private void ProcessInput()

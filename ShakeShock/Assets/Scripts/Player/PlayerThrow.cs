@@ -25,10 +25,8 @@ public class PlayerThrow : MonoBehaviour
     [Header("Settings")]
     [SerializeField]
     private float throwForce;
-
-    [Header("Debug")]
     [SerializeField]
-    private Throwable.ThrowableType debugType;
+    private Throwable.ThrowableType type;
 
     #endregion
 
@@ -42,6 +40,15 @@ public class PlayerThrow : MonoBehaviour
         {
             ProcessInput();
         }
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    public void SetThrowableType(Throwable.ThrowableType newType)
+    {
+        type = newType;
     }
 
     #endregion
@@ -67,7 +74,7 @@ public class PlayerThrow : MonoBehaviour
             GameObject throwable = Instantiate(throwablePrefab, spawnPoint, Quaternion.identity);
             Throwable throwableScript = throwable.GetComponent<Throwable>();
 
-            throwableScript.SetThrowableType(debugType);
+            throwableScript.SetThrowableType(type);
             throwableScript.SetThrowForce(throwForce);
             throwableScript.SetThrowDirection(throwDirection);
             throwableScript.SetThrowPlayer(player.GetGameObject());
