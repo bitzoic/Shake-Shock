@@ -111,6 +111,8 @@ public class MainMenu : MonoBehaviour
     {
         // Some contract stuff and then you'll need to update the player metadata
 
+        // I'll add a panel for when we don't have enough tokens
+
         // contract stuff here
 
         // Update metadata
