@@ -29,6 +29,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private GameObject statsButtonGameObject;
     [SerializeField]
+    private GameObject notEnoughTokensButtonGameObject;
+
+    [Header("DropDown")]
+    [SerializeField]
     private Dropdown armorDropdown;
     [SerializeField]
     private Dropdown throwableDropdown;
@@ -38,6 +42,8 @@ public class MainMenu : MonoBehaviour
     private GameObject titleTextGameObject;
     [SerializeField]
     private GameObject loadingGameObject;
+    [SerializeField]
+    private GameObject notEnoughTokensPanelGameObject;
 
     [Header("Stats Panel")]
     [SerializeField]
@@ -65,22 +71,13 @@ public class MainMenu : MonoBehaviour
 
     #region Monobehaviors
 
-    // This is called first
-    private void Awake()
-    {
-        
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        ShowHideMainScreen(false);
+        loadingGameObject.SetActive(false);
+        statsPanelGameObject.SetActive(false);
+        notEnoughTokensPanelGameObject.SetActive(false);
     }
 
     #endregion
@@ -151,6 +148,11 @@ public class MainMenu : MonoBehaviour
         ShowHideMainScreen(true);
     }
 
+    public void OnClickNotEnoughTokensClose()
+    {
+        notEnoughTokensPanelGameObject.SetActive(false);
+    }
+
     #endregion
 
     #region Private Methods
@@ -163,7 +165,6 @@ public class MainMenu : MonoBehaviour
         statsButtonGameObject.SetActive(status);
         throwableDropDownGameObject.SetActive(status);
         armorDropDownGameObject.SetActive(status);
-        titleTextGameObject.SetActive(status);
     }
 
     // Disables the connect wallet button once we've pressed it and shows loading screen
@@ -222,6 +223,11 @@ public class MainMenu : MonoBehaviour
 
         // Add the image and finish
         StartCoroutine(SetPlayerImage("This will be the IPFS URL????", player));
+    }
+
+    private void NotEnoughTokens()
+    {
+        notEnoughTokensPanelGameObject.SetActive(true);
     }
 
     #endregion

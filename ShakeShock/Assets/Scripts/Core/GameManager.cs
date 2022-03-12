@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     [Header("General Settings")]
     [SerializeField]
     private int startGameWaitTime;
+    [SerializeField]
+    private int endGameWaitTime;
 
     [Header("Debug")]
     [SerializeField]
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
     private List<Player> players;
     private List<PlayerMetadata> playerMetadata;
     private bool isRunning = false;
+    private CanvasManager canvasManagerScript;
 
     #endregion
 
@@ -86,14 +89,15 @@ public class GameManager : MonoBehaviour
         if (!debugMode)
         {
             debugGameObject.SetActive(false);
-            StartCoroutine(WaitToStartGame());
+            //StartCoroutine(WaitToStartGame());
+            canvasManagerScript.StartGame(startGameWaitTime);
         }
         else
         {
-            isRunning = true;
             players.Add(debugPlayer);
             SetCameraTargets();
-            debugPlayer.SetGameRunning(true);
+            //debugPlayer.SetGameRunning(true);
+            canvasManagerScript.StartGame(startGameWaitTime);
         }
     }
 
@@ -110,6 +114,10 @@ public class GameManager : MonoBehaviour
     {
         isRunning = false;
         Time.timeScale = 0;
+        foreach (Player player in players)
+        {
+            player.SetGameRunning(false);
+        }
 
         OnGameOver(loosingPlayer);
     }
@@ -159,15 +167,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Private Methods
-
-    private void GameStarted()
+    public void StartGame()
     {
         // Do stuff here to start the game
         isRunning = true;
+        foreach (Player player in players)
+        {
+            player.SetGameRunning(true);
+        }
     }
+
+    #endregion
+
+    #region Private Methods
 
     private void SetCameraTargets()
     {
@@ -187,6 +199,7 @@ public class GameManager : MonoBehaviour
         cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         spawnLocation1 = GameObject.Find("SpawnLocation1").transform;
         spawnLocation2 = GameObject.Find("SpawnLocation2").transform;
+        canvasManagerScript = GameObject.Find("CanvasManager").GetComponent<CanvasManager>();
 
         // Load in players
         if (debugMode == false)
@@ -252,6 +265,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        int winnerIndex = players.IndexOf(winningPlayer) + 1;
+        canvasManagerScript.GameOver(winnerIndex.ToString());
+
         string winningWallet = winningPlayer.GetPlayerMetadata().GetWallet();
         string loosingWallet = loosingPlayer.GetPlayerMetadata().GetWallet();
 
@@ -259,7 +275,7 @@ public class GameManager : MonoBehaviour
 
 
         // Once we're done, we want to go to the main menu
-        GoToMainMenu();
+        StartCoroutine(WaitToSwitchScenes());
     }
 
     private void GoToMainMenu()
@@ -272,10 +288,10 @@ public class GameManager : MonoBehaviour
 
     #region Coroutines
 
-    private IEnumerator WaitToStartGame()
+    private IEnumerator WaitToSwitchScenes()
     {
-        yield return new WaitForSeconds(startGameWaitTime);
-        GameStarted();
+        yield return new WaitForSeconds(endGameWaitTime);
+        GoToMainMenu();
     }
 
     #endregion
