@@ -3667,27 +3667,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8512585644789332993, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
+      propertyPath: debugPlayer
+      value: 
+      objectReference: {fileID: 856141986}
+    - target: {fileID: 8512585644789332993, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
+      propertyPath: cameraFollow
+      value: 
+      objectReference: {fileID: 1048387208}
+    - target: {fileID: 8512585644789332993, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
+      propertyPath: debugGameObject
+      value: 
+      objectReference: {fileID: 1723374112}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
---- !u!1 &8512585644789332992 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1487490821842237912, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
-  m_PrefabInstance: {fileID: 8512585644789332991}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8512585644789332993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8512585644789332992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e38d30a3447f23b4c870a4a9b2fe5288, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraFollow: {fileID: 1048387208}
-  debugGameObject: {fileID: 1723374112}
-  startGameWaitTime: 5
-  debugMode: 1
-  debugPlayer: {fileID: 856141986}
