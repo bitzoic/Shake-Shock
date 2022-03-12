@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1487490821842237912
+--- !u!1 &8485443271260940808
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7981852446922423287}
-  - component: {fileID: 8512585644789332993}
+  - component: {fileID: 1415104133813364186}
+  - component: {fileID: 930569756}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: CanvasManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7981852446922423287
+--- !u!4 &1415104133813364186
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1487490821842237912}
+  m_GameObject: {fileID: 8485443271260940808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1135.3728, y: 617.65076, z: -55.13571}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8512585644789332993
+--- !u!114 &930569756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1487490821842237912}
+  m_GameObject: {fileID: 8485443271260940808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e38d30a3447f23b4c870a4a9b2fe5288, type: 3}
+  m_Script: {fileID: 11500000, guid: dd15c96d85420f14c829e5fe7cc39eee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraFollow: {fileID: 0}
-  debugGameObject: {fileID: 0}
-  gameManagerGameObject: {fileID: 1487490821842237912}
-  spawnLocation1: {fileID: 0}
-  spawnLocation2: {fileID: 0}
-  startGameWaitTime: 5
-  endGameWaitTime: 0
-  debugMode: 1
-  debugPlayer: {fileID: 0}
+  canvasManager: {fileID: 8485443271260940808}
+  gameStartStopPanel: {fileID: 0}
+  gameStartStopText: {fileID: 0}
+  fightTextDisplayTime: 1
