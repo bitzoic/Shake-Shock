@@ -64,6 +64,10 @@ public class PlayerMovement : MonoBehaviour
     private float strafeUsedTime = 0;
     private float jumpedTime;
 
+    private float metaSpeedMultiplier = 1;
+    private float metaJumpMultiplier = 1;
+    private float metaStrafeMultiplier = 1;
+
     #endregion
 
     #region Monobehaviors
@@ -101,6 +105,21 @@ public class PlayerMovement : MonoBehaviour
     {
         didDoubleJump = false;
         didJump = false;
+    }
+
+    public void SetStrafeMultiplier(float val)
+    {
+        metaStrafeMultiplier = val;
+    }
+
+    public void SetJumpMultiplier(float val)
+    {
+        metaJumpMultiplier = val;
+    }
+
+    public void SetSpeedMultiplier(float val)
+    {
+        metaSpeedMultiplier = val;
     }
 
     #endregion
@@ -200,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
         // If we pressed button quick enough
         if (Time.time - strafeLeftTime <= strafeButtonTime && lastDirection == -1)
         {
-            player.GetRigidbody2D().AddForce(player.GetTransform().right * -strafeMultiplier);
+            player.GetRigidbody2D().AddForce(player.GetTransform().right * -strafeMultiplier * metaStrafeMultiplier);
             strafeUsedTime = Time.time;
             EnableTrail();
         }
@@ -221,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
         // If we pressed button quick enough
         if (Time.time - strafeRightTime <= strafeButtonTime && lastDirection == 1)
         {
-            player.GetRigidbody2D().AddForce(player.GetTransform().right * strafeMultiplier);
+            player.GetRigidbody2D().AddForce(player.GetTransform().right * strafeMultiplier * metaStrafeMultiplier);
             strafeUsedTime = Time.time;
             EnableTrail();
         }
@@ -247,7 +266,7 @@ public class PlayerMovement : MonoBehaviour
             currentmoveMultiplier = moveMinMultiplier;
         }
 
-        player.GetRigidbody2D().AddForce(player.GetTransform().right * -currentmoveMultiplier);
+        player.GetRigidbody2D().AddForce(player.GetTransform().right * -currentmoveMultiplier * metaSpeedMultiplier);
     }
 
     private void MoveRight()
@@ -265,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
         {
             currentmoveMultiplier = moveMinMultiplier;
         }
-        player.GetRigidbody2D().AddForce(player.GetTransform().right * currentmoveMultiplier);
+        player.GetRigidbody2D().AddForce(player.GetTransform().right * currentmoveMultiplier * metaSpeedMultiplier);
     }
 
     private void Jump()
@@ -283,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
             EnableDoubleJumpParticles();
         }
 
-        player.GetRigidbody2D().AddForce(player.GetTransform().up * jumpMaxMuliplier);
+        player.GetRigidbody2D().AddForce(player.GetTransform().up * jumpMaxMuliplier * metaJumpMultiplier);
         jumpedTime = Time.time;
         jumpReleased = false;
         didJump = true;

@@ -22,13 +22,25 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Collider2D playerCollider;
     [SerializeField]
+    private SpriteRenderer playerSpriteRenderer;
+
+    [Header("Effects")]
+    [SerializeField]
     private TrailRenderer playerTrail;
     [SerializeField]
     private ParticleSystem playerStrafeParticles;
     [SerializeField]
     private ParticleSystem playerDoubleJumpParticles;
+
+    [Header("Scripts")]
     [SerializeField]
     private PlayerHealth playerHealthScript;
+    [SerializeField]
+    private PlayerMovement playerMovementScript;
+    [SerializeField]
+    private Shield playerShieldScript;
+    [SerializeField]
+    private PlayerThrow playerThrowScript;
 
     [Header("Settings")]
     [SerializeField]
@@ -139,10 +151,21 @@ public class Player : MonoBehaviour
         return playerHealthScript;
     }
 
+    public void LoadMetadata(PlayerMetadata meta)
+    {
+        playerMovementScript.SetJumpMultiplier(meta.GetJumpMultiplier());
+        playerMovementScript.SetSpeedMultiplier(meta.GetSpeedMultiplier());
+        playerMovementScript.SetStrafeMultiplier(meta.GetDashMultiplier());
+        playerHealthScript.SetMaxHealth(meta.GetHealth());
+        playerHealthScript.SetArmour(meta.GetArmor());
+        playerShieldScript.SetShieldTime(meta.GetShieldTime());
+        playerThrowScript.SetThrowableType(meta.GetThrowableType());
+        playerSpriteRenderer.sprite = meta.GetPlayerSprite();
+    }
+
     #endregion
 
     #region Private Methods
-
 
 
     #endregion
