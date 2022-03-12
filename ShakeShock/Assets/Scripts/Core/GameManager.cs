@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     #region Run-Time Fields
 
     private List<Player> players;
+    private List<PlayerMetadata> playerMetadata;
     private bool isRunning = false;
 
     #endregion
@@ -97,6 +98,46 @@ public class GameManager : MonoBehaviour
     public bool IsGameRunning()
     {
         return isRunning;
+    }
+
+    public void AddNewPlayerMetadata(PlayerMetadata meta)
+    {
+        playerMetadata.Add(meta);
+    }
+
+    public List<PlayerMetadata> GetAllPlayerMetadata()
+    {
+        return playerMetadata;
+    }
+
+    public PlayerMetadata GetPlayerMetadata(int index)
+    {
+        if (playerMetadata.Count >= index)
+        {
+            return null;
+        }
+        return playerMetadata[index];
+    }
+
+    public PlayerMetadata GetPlayerMetadata(string wallet)
+    {
+        foreach (PlayerMetadata player in playerMetadata)
+        {
+            if (wallet == player.GetWallet())
+            {
+                return player;
+            }
+        }
+
+        return null;
+    }
+
+    public void DeletePlayerMetadata(PlayerMetadata metadata)
+    {
+        if (playerMetadata.Contains(metadata))
+        {
+            playerMetadata.Remove(metadata);
+        }
     }
 
     #endregion
