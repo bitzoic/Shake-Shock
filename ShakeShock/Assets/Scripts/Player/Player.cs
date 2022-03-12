@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
     private bool allowInput = true;
     private bool onGround = false;
     private int directionFacing = -1;
+    private PlayerMetadata metadata;
 
     #endregion
 
@@ -153,6 +154,7 @@ public class Player : MonoBehaviour
 
     public void LoadMetadata(PlayerMetadata meta)
     {
+        metadata = meta;
         playerMovementScript.SetJumpMultiplier(meta.GetJumpMultiplier());
         playerMovementScript.SetSpeedMultiplier(meta.GetSpeedMultiplier());
         playerMovementScript.SetStrafeMultiplier(meta.GetDashMultiplier());
@@ -161,6 +163,11 @@ public class Player : MonoBehaviour
         playerShieldScript.SetShieldTime(meta.GetShieldTime());
         playerThrowScript.SetThrowableType(meta.GetThrowableType());
         playerSpriteRenderer.sprite = meta.GetPlayerSprite();
+    }
+
+    public PlayerMetadata GetPlayerMetadata()
+    {
+        return metadata;
     }
 
     #endregion

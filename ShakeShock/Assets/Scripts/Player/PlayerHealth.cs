@@ -90,8 +90,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void PlayerDeath()
     {
-        // TODO: 
-        // Do something when the player dies
+        GameManager.main.EndGame(player);
     }
 
     private void UpdateHealthSlider()

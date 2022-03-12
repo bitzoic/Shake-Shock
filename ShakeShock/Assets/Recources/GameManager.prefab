@@ -45,6 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraFollow: {fileID: 0}
   debugGameObject: {fileID: 0}
+  gameManagerGameObject: {fileID: 1487490821842237912}
+  spawnLocation1: {fileID: 0}
+  spawnLocation2: {fileID: 0}
   startGameWaitTime: 5
   debugMode: 1
   debugPlayer: {fileID: 0}

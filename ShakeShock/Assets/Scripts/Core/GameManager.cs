@@ -65,6 +65,9 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
 
+        playerMetadata = new List<PlayerMetadata>();
+        players = new List<Player>();
+
         // We're in game
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
@@ -80,12 +83,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Load in players
-        players = new List<Player>();
-
-        // TODO:
-        // Some NFT stuff here??? Who is playing!!!!
-
         if (!debugMode)
         {
             debugGameObject.SetActive(false);
@@ -109,9 +106,12 @@ public class GameManager : MonoBehaviour
         return players;
     }
 
-    public void EndGame()
+    public void EndGame(Player loosingPlayer)
     {
         isRunning = false;
+        Time.timeScale = 0;
+
+        OnGameOver(loosingPlayer);
     }
 
     public bool IsGameRunning()
@@ -188,20 +188,84 @@ public class GameManager : MonoBehaviour
         spawnLocation1 = GameObject.Find("SpawnLocation1").transform;
         spawnLocation2 = GameObject.Find("SpawnLocation2").transform;
 
+        // Load in players
+        if (debugMode == false)
+        {
+            cameraFollow.ClearTargetList();
+            GameObject debugGameObject = GameObject.Find("Debug");
+            if (debugGameObject != null)
+            {
+                Destroy(debugGameObject);
+            }
+        }
+
         if (playerMetadata.Count > 0)
         {
-            GameObject playerGameObject1 = Instantiate(Resources.Load("Player"), spawnLocation1.position, Quaternion.identity) as GameObject;
+            GameObject playerGameObject1 = Instantiate(
+                Resources.Load("Player"), 
+                spawnLocation1.position, 
+                Quaternion.identity
+                ) as GameObject;
             Player player1Script = playerGameObject1.GetComponent<Player>();
             player1Script.LoadMetadata(playerMetadata[0]);
             players.Add(player1Script);
+            cameraFollow.AddToTargetList(player1Script.GetTransform());
         }
         if (playerMetadata.Count > 1)
         {
-            GameObject playerGameObject2 = Instantiate(Resources.Load("Player"), spawnLocation2.position, Quaternion.identity) as GameObject;
+            GameObject playerGameObject2 = Instantiate(
+                Resources.Load("Player"), 
+                spawnLocation2.position, 
+                Quaternion.identity
+                ) as GameObject;
             Player player2Script = playerGameObject2.GetComponent<Player>();
             player2Script.LoadMetadata(playerMetadata[2]);
             players.Add(player2Script);
+            cameraFollow.AddToTargetList(player2Script.GetTransform());
         }
+    }
+
+    private void OnGameOver(Player loosingPlayer)
+    {
+        Player winningPlayer = null;
+
+        // Only 1 player there can't be a winning player. This should not happen
+        if (players.Count == 1)
+        {
+            Debug.Log("ERROR: 2 Player were not in the game!");
+            GoToMainMenu();
+            return;
+        }
+
+        foreach (Player player in players)
+        {
+            if (player != loosingPlayer)
+            {
+                winningPlayer = player;
+            }
+        }
+
+        if (winningPlayer == null)
+        {
+            Debug.Log("ERROR: Something went horribly wrong");
+            GoToMainMenu();
+            return;
+        }
+
+        string winningWallet = winningPlayer.GetPlayerMetadata().GetWallet();
+        string loosingWallet = loosingPlayer.GetPlayerMetadata().GetWallet();
+
+        // Wallet stuff here
+
+
+        // Once we're done, we want to go to the main menu
+        GoToMainMenu();
+    }
+
+    private void GoToMainMenu()
+    {
+        players.Clear();
+        SceneManager.LoadScene(0);
     }
 
     #endregion

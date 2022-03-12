@@ -53,6 +53,11 @@ public class CameraFollow : MonoBehaviour
         targets.Add(newTarget);
     }
 
+    public void ClearTargetList()
+    {
+        targets.Clear();
+    }
+
     #endregion
 
     #region Private Methods
