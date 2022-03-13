@@ -86,7 +86,7 @@ public class PlayerThrow : MonoBehaviour
             }
             else
             {
-                throwable = Instantiate(Resources.Load("Throwable"), spawnPoint, Quaternion.identity) as GameObject;
+                throwable = Instantiate(throwablePrefab, spawnPoint, Quaternion.identity) as GameObject;
             }
             Throwable throwableScript = throwable.GetComponent<Throwable>();
 
@@ -94,6 +94,19 @@ public class PlayerThrow : MonoBehaviour
             throwableScript.SetThrowForce(throwForce);
             throwableScript.SetThrowDirection(throwDirection);
             throwableScript.SetThrowPlayer(player.GetGameObject());
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            type = Throwable.ThrowableType.basicApple;
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            type = Throwable.ThrowableType.explosiveApple;
+        }
+        else if (Input.GetKeyDown(KeyCode.T))
+        {
+            type = Throwable.ThrowableType.electricApple;
         }
     }
 

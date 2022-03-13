@@ -48,7 +48,9 @@ MonoBehaviour:
   gameManagerGameObject: {fileID: 1487490821842237912}
   spawnLocation1: {fileID: 0}
   spawnLocation2: {fileID: 0}
+  playerPrefab: {fileID: 5161004017801417913, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
   startGameWaitTime: 5
   endGameWaitTime: 0
   debugMode: 0
   debugPlayer: {fileID: 0}
+  muliplayerMode: 0

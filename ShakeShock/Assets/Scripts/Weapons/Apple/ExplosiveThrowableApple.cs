@@ -82,7 +82,7 @@ public class ExplosiveThrowableApple : MonoBehaviour
         }
         else
         {
-            explosion = Instantiate(Resources.Load("Explosion"), parentThrowable.transform.position, Quaternion.identity) as GameObject;
+            explosion = Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity) as GameObject;
         }
         Explosion explosionScript = explosion.GetComponent<Explosion>();
         explosionScript.SetDamage(damage);

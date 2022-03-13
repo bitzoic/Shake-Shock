@@ -85,7 +85,7 @@ public class ElectricThrowableApple : MonoBehaviour
         }
         else
         {
-            Instantiate(Resources.Load("ElectricOrb"), parentThrowable.transform.position, Quaternion.identity);
+            Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity);
         }
         Destroy(parentThrowable);
     }

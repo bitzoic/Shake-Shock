@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     private Transform spawnLocation1;
     [SerializeField]
     private Transform spawnLocation2;
+    [SerializeField]
+    private GameObject playerPrefab;
 
     [Header("General Settings")]
     [SerializeField]
@@ -287,7 +289,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 playerGameObject1 = Instantiate(
-                    Resources.Load("Player"),
+                    playerPrefab,
                     spawnLocation1.position,
                     Quaternion.identity
                     ) as GameObject;

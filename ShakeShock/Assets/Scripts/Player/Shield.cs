@@ -120,17 +120,17 @@ public class Shield : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1) && GameManager.main.IsGameRunning() && player.GetAllowInput() && currentShield > 0 && player.GetPhotonView().IsMine)
+        if (Input.GetMouseButton(1) && GameManager.main.IsGameRunning() && player.GetAllowInput() && currentShield > 0)
         {
             ProcessInput();
         }
-        else if (shieldEnabled == true && player.GetPhotonView().IsMine)
+        else if (shieldEnabled == true)
         {
             HideShield();
             DisableShield();
             shieldEnabled = false;
         }
-        else if (player.GetPhotonView().IsMine)
+        else
         {
             if (!shieldBroken)
             {
@@ -138,10 +138,7 @@ public class Shield : MonoBehaviour
             }
         }
 
-        if (player.GetPhotonView().IsMine)
-        {
-            UpdateSlider();
-        }
+        UpdateSlider();
     }
 
     #endregion
@@ -164,6 +161,11 @@ public class Shield : MonoBehaviour
             ShowShield();
             EnableShield();
             shieldEnabled = true;
+        }
+
+        if (mainCamera == null)
+        {
+            mainCamera = player.GetCamera();
         }
 
         Vector2 mousePosition = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));

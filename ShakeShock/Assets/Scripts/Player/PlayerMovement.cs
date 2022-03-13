@@ -82,19 +82,41 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (GameManager.main.IsGameRunning() && player.GetAllowInput() && player.GetPhotonView().IsMine)
+        if (GameManager.main.GetMultiplayerMode())
         {
-            ProcessStrafing();
-            ProcessJump();
-            ProcessDirection();
+            if (GameManager.main.IsGameRunning() && player.GetAllowInput() && player.GetPhotonView().IsMine)
+            {
+                ProcessStrafing();
+                ProcessJump();
+                ProcessDirection();
+            }
+        }
+        else
+        {
+            if (GameManager.main.IsGameRunning() && player.GetAllowInput())
+            {
+                ProcessStrafing();
+                ProcessJump();
+                ProcessDirection();
+            }
         }
     }
 
     void FixedUpdate()
     {
-        if (GameManager.main.IsGameRunning() && player.GetAllowInput() && player.GetPhotonView().IsMine)
+        if (GameManager.main.GetMultiplayerMode())
         {
-            ProcessMovement();
+            if (GameManager.main.IsGameRunning() && player.GetAllowInput() && player.GetPhotonView().IsMine)
+            {
+                ProcessMovement();
+            }
+        }
+        else
+        {
+            if (GameManager.main.IsGameRunning() && player.GetAllowInput())
+            {
+                ProcessMovement();
+            }
         }
     }
 

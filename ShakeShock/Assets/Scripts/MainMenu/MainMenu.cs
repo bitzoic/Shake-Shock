@@ -49,6 +49,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject roomBackButton;
     [SerializeField]
+    private GameObject mintButtonGameObject;
+    [SerializeField]
+    private GameObject evolveButtonGameObject;
+    [SerializeField]
     private MoralisController moralisController;
 
     [Header("DropDown")]
@@ -144,7 +148,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public async void OnClickConnectWallet()
     {
         DisableConnectWalletButton();
-        OnWalletConnected();
+        //OnWalletConnected();
 
         // Connect wallet stuff here
         // I have a walletConnected bool to make sure the wallet is conencted before continuing. You can use this or something else
@@ -335,6 +339,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         statsButtonGameObject.SetActive(status);
         throwableDropDownGameObject.SetActive(status);
         armorDropDownGameObject.SetActive(status);
+        mintButtonGameObject.SetActive(status);
+        evolveButtonGameObject.SetActive(status);
     }
 
     // Disables the connect wallet button once we've pressed it and shows loading screen
@@ -442,7 +448,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     private IEnumerator ConnectWait()
     {
-        yield return new WaitForSeconds(5);
+        // This is really bad. Couldn't get WalletConnect to call OnWalletConnected() for whatever reason
+        yield return new WaitForSeconds(1);
         OnWalletConnected();
     }
 
