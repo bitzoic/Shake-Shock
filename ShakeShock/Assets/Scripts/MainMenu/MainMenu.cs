@@ -101,12 +101,22 @@ public class MainMenu : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        ShowHideMainScreen(true);
+        if (debugMode)
+        {
+            ShowHideMainScreen(true);
+        }
+        else
+        {
+            ShowHideMainScreen(false);
+        }
         ShowHideGameSetup(false);
         loadingGameObject.SetActive(false);
         statsPanelGameObject.SetActive(false);
         notEnoughTokensPanelGameObject.SetActive(false);
-        connectWalletButtonGameObject.SetActive(false);
+        if (debugMode)
+        {
+            connectWalletButtonGameObject.SetActive(false);
+        }
     }
 
     #endregion
