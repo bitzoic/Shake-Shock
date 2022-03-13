@@ -7193,7 +7193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1185407201939913774, guid: c804ff19b2199bf4fa51550be91a820f, type: 3}
       propertyPath: debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1185407201939913774, guid: c804ff19b2199bf4fa51550be91a820f, type: 3}
       propertyPath: armorDropdown
