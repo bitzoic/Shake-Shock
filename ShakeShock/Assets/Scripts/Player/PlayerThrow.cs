@@ -58,7 +58,9 @@ public class PlayerThrow : MonoBehaviour
 
     private void ProcessInput()
     {
-        if (Input.GetMouseButtonDown(0) && player.GetPhotonView().IsMine)
+        if (Input.GetMouseButtonDown(0) && (
+            !GameManager.main.GetMultiplayerMode()
+            || (player.GetPhotonView().IsMine && GameManager.main.GetMultiplayerMode())))
         {
             if (mainCamera == null)
             {
@@ -77,7 +79,15 @@ public class PlayerThrow : MonoBehaviour
                 playerThrowableGameObject.transform.position.y + (1 * throwDirection.y)
                 );
 
-            GameObject throwable = PhotonNetwork.Instantiate("Throwable", spawnPoint, Quaternion.identity);
+            GameObject throwable;
+            if (GameManager.main.GetMultiplayerMode())
+            {
+                throwable = PhotonNetwork.Instantiate("Throwable", spawnPoint, Quaternion.identity);
+            }
+            else
+            {
+                throwable = Instantiate(Resources.Load("Throwable"), spawnPoint, Quaternion.identity) as GameObject;
+            }
             Throwable throwableScript = throwable.GetComponent<Throwable>();
 
             throwableScript.SetThrowableType(type);

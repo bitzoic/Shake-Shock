@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 149953921}
   - component: {fileID: 2605879701322622813}
   - component: {fileID: -5774866055085384469}
+  - component: {fileID: 8395152438603941745}
   m_Layer: 0
   m_Name: Throwable
   m_TagString: Untagged
@@ -372,6 +373,22 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &8395152438603941745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6168193738847571735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &6168193739101318079
 GameObject:
   m_ObjectHideFlags: 0

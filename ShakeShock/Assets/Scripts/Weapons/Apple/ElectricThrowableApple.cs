@@ -79,7 +79,14 @@ public class ElectricThrowableApple : MonoBehaviour
 
     private void ExplodeApple()
     {
-        PhotonNetwork.Instantiate("ElectricOrb", parentThrowable.transform.position, Quaternion.identity);
+        if (GameManager.main.GetMultiplayerMode())
+        {
+            PhotonNetwork.Instantiate("ElectricOrb", parentThrowable.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(Resources.Load("ElectricOrb"), parentThrowable.transform.position, Quaternion.identity);
+        }
         Destroy(parentThrowable);
     }
 

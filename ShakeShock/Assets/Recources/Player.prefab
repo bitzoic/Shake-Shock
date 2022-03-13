@@ -6780,7 +6780,7 @@ MonoBehaviour:
   player: {fileID: 5161004017801417862}
   mainCamera: {fileID: 0}
   throwForce: 300
-  type: 0
+  type: 1
 --- !u!1 &1500684885
 GameObject:
   m_ObjectHideFlags: 0
@@ -17100,6 +17100,7 @@ GameObject:
   - component: {fileID: 8491533882091209261}
   - component: {fileID: 4751696512389629288}
   - component: {fileID: -3002630039905593631}
+  - component: {fileID: -6334426459540999209}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -17287,6 +17288,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -3002630039905593631}
+  - {fileID: -6334426459540999209}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -17323,6 +17325,22 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &-6334426459540999209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5161004017801417913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &5933357531533555319
 GameObject:
   m_ObjectHideFlags: 0

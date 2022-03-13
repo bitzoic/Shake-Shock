@@ -12,6 +12,11 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
+using MoralisWeb3ApiSdk;
+using Moralis.WebGL;
+using Moralis.WebGL.Platform.Objects;
+
+
 public class MainMenu : MonoBehaviourPunCallbacks
 {
     #region Inspector Fields
@@ -43,6 +48,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     private GameObject joinRoomInputPanelGameObject;
     [SerializeField]
     private GameObject roomBackButton;
+    [SerializeField]
+    private MoralisController moralisController;
 
     [Header("DropDown")]
     [SerializeField]
@@ -99,7 +106,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     #region Monobehaviors
 
     // Start is called before the first frame update
-    void Start()
+    async void Start()
     {
         if (debugMode)
         {
@@ -117,6 +124,16 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             connectWalletButtonGameObject.SetActive(false);
         }
+
+        if (moralisController != null && moralisController)
+        {
+            await moralisController.Initialize();
+        }
+        else
+        {
+            // Moralis values not set or initialized.
+            Debug.LogError("The MoralisInterface has not been set up, please check you MoralisController in the scene.");
+        }
     }
 
     #endregion
@@ -124,12 +141,67 @@ public class MainMenu : MonoBehaviourPunCallbacks
     #region Public Methods
 
     // The connect wallet button is pressed
-    public void OnClickConnectWallet()
+    public async void OnClickConnectWallet()
     {
         DisableConnectWalletButton();
+        OnWalletConnected();
 
         // Connect wallet stuff here
         // I have a walletConnected bool to make sure the wallet is conencted before continuing. You can use this or something else
+        string userAddr = "";
+        if (!Web3GL.IsConnected())
+        {
+            userAddr = await MoralisInterface.SetupWeb3();
+        }
+        else
+        {
+            userAddr = Web3GL.Account();
+        }
+
+        if (string.IsNullOrWhiteSpace(userAddr))
+        {
+            Debug.LogError("Could not login or fetch account from web3.");
+        }
+        else
+        {
+            string address = Web3GL.Account().ToLower();
+            string appId = MoralisInterface.GetClient().ApplicationId;
+            long serverTime = 0;
+
+            // Retrieve server time from Moralis Server for message signature
+            Dictionary<string, object> serverTimeResponse = await MoralisInterface.GetClient().Cloud.RunAsync<Dictionary<string, object>>("getServerTime", new Dictionary<string, object>());
+
+            if (serverTimeResponse == null || !serverTimeResponse.ContainsKey("dateTime") ||
+                !long.TryParse(serverTimeResponse["dateTime"].ToString(), out serverTime))
+            {
+                Debug.Log("Failed to retrieve server time from Moralis Server!");
+            }
+
+            string signMessage = $"Moralis Authentication\n\nId: {appId}:{serverTime}";
+
+            string signature = await Web3GL.Sign(signMessage);
+
+            Debug.Log($"Signature {signature} for {address} was returned.");
+
+            // Create moralis auth data from message signing response.
+            Dictionary<string, object> authData = new Dictionary<string, object> { { "id", address }, { "signature", signature }, { "data", signMessage } };
+
+            Debug.Log("Logging in user.");
+
+            // Attempt to login user.
+            MoralisUser user = await MoralisInterface.LogInAsync(authData);
+
+            if (user != null)
+            {
+                Debug.Log($"User {user.username} logged in successfully. ");
+            }
+            else
+            {
+                Debug.Log("User login failed.");
+            }
+        }
+
+        StartCoroutine(ConnectWait());
     }
 
     // The play button is pressed
@@ -224,30 +296,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         StartCoroutine(WaitToJoinRoom());
     }
 
-    #endregion
-
-    #region Private Methods
-
-    // Just shows and hides the main menu
-    private void ShowHideMainScreen(bool status)
-    {
-        playButtonGameObject.SetActive(status);
-        levelUpButtonGameObject.SetActive(status);
-        statsButtonGameObject.SetActive(status);
-        throwableDropDownGameObject.SetActive(status);
-        armorDropDownGameObject.SetActive(status);
-    }
-
-    // Disables the connect wallet button once we've pressed it and shows loading screen
-    // Basically waiting for player to connect wallet before we show the main menu
-    private void DisableConnectWalletButton()
-    {
-        connectWalletButtonGameObject.SetActive(false);
-        loadingGameObject.SetActive(true);
-    }
-
     // Call this once the wallet has connected, may need some modification
-    private void OnWalletConnected()
+    public void OnWalletConnected()
     {
         walletConnected = true;
         loadingGameObject.SetActive(false);
@@ -272,6 +322,30 @@ public class MainMenu : MonoBehaviourPunCallbacks
             armorDropdown.options.Add(new Dropdown.OptionData(option));
         }
     }
+
+    #endregion
+
+    #region Private Methods
+
+    // Just shows and hides the main menu
+    private void ShowHideMainScreen(bool status)
+    {
+        playButtonGameObject.SetActive(status);
+        levelUpButtonGameObject.SetActive(status);
+        statsButtonGameObject.SetActive(status);
+        throwableDropDownGameObject.SetActive(status);
+        armorDropDownGameObject.SetActive(status);
+    }
+
+    // Disables the connect wallet button once we've pressed it and shows loading screen
+    // Basically waiting for player to connect wallet before we show the main menu
+    private void DisableConnectWalletButton()
+    {
+        connectWalletButtonGameObject.SetActive(false);
+        loadingGameObject.SetActive(true);
+    }
+
+   
 
     // Example of adding a player's metadata to the gamemanager to handle when generating the game on play
     private void CreateNewPlayerMetadata()
@@ -364,6 +438,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
 
         SceneManager.LoadScene(2);
+    }
+
+    private IEnumerator ConnectWait()
+    {
+        yield return new WaitForSeconds(5);
+        OnWalletConnected();
     }
 
     #endregion
