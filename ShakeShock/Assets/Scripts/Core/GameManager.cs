@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     private Transform spawnLocation1;
     [SerializeField]
     private Transform spawnLocation2;
+    [SerializeField]
+    private GameObject playerPrefab;
 
     [Header("General Settings")]
     [SerializeField]
@@ -43,6 +45,8 @@ public class GameManager : MonoBehaviour
     private bool debugMode;
     [SerializeField]
     private Player debugPlayer;
+    [SerializeField]
+    private bool muliplayerMode;
 
     #endregion
 
@@ -118,7 +122,7 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 2 && gameStarted == false)
         {
-            if (PhotonNetwork.CountOfPlayers == 2)
+            if (PhotonNetwork.CountOfPlayers == 2 || debugMode)
             {
                 canvasManagerScript.StartGame(startGameWaitTime);
                 gameStarted = true;
@@ -169,6 +173,11 @@ public class GameManager : MonoBehaviour
     public List<PlayerMetadata> GetAllPlayerMetadata()
     {
         return playerMetadata;
+    }
+
+    public bool GetMultiplayerMode()
+    {
+        return muliplayerMode;
     }
 
     public PlayerMetadata GetPlayerMetadata(int index)
@@ -268,11 +277,23 @@ public class GameManager : MonoBehaviour
 
         if (playerMetadata.Count > 0)
         {
-            GameObject playerGameObject1 = PhotonNetwork.Instantiate(
-                "Player", 
-                spawnLocation1.position, 
-                Quaternion.identity
-                );
+            GameObject playerGameObject1 = null;
+            if (muliplayerMode)
+            {
+                playerGameObject1 = PhotonNetwork.Instantiate(
+                    "Player",
+                    spawnLocation1.position,
+                    Quaternion.identity
+                    ); 
+            }
+            else
+            {
+                playerGameObject1 = Instantiate(
+                    playerPrefab,
+                    spawnLocation1.position,
+                    Quaternion.identity
+                    ) as GameObject;
+            }
             Player player1Script = playerGameObject1.GetComponent<Player>();
 
             PlayerMetadata thisPlayerMetadata = null;
@@ -288,7 +309,7 @@ public class GameManager : MonoBehaviour
             cameraFollow.AddToTargetList(player1Script.GetTransform());
             player1Script.SetCamera(mainCamera);
             players.Add(player1Script);
-            player1Script.LoadMetadata(thisPlayerMetadata);
+            //player1Script.LoadMetadata(thisPlayerMetadata);
         }
     }
 

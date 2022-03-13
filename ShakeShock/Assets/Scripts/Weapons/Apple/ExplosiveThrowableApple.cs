@@ -75,7 +75,15 @@ public class ExplosiveThrowableApple : MonoBehaviour
 
     private void ExplodeApple()
     {
-        GameObject explosion = PhotonNetwork.Instantiate("Explosion", parentThrowable.transform.position, Quaternion.identity);
+        GameObject explosion;
+        if (GameManager.main.GetMultiplayerMode())
+        {
+            explosion = PhotonNetwork.Instantiate("Explosion", parentThrowable.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            explosion = Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity) as GameObject;
+        }
         Explosion explosionScript = explosion.GetComponent<Explosion>();
         explosionScript.SetDamage(damage);
         explosionScript.SetPlayerGameobject(parentThrowableScript.GetThrowPlayer());
