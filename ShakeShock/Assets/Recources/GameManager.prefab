@@ -50,5 +50,5 @@ MonoBehaviour:
   spawnLocation2: {fileID: 0}
   startGameWaitTime: 5
   endGameWaitTime: 0
-  debugMode: 1
+  debugMode: 0
   debugPlayer: {fileID: 0}

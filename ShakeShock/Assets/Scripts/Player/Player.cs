@@ -7,6 +7,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Photon.Pun;
 
 public class Player : MonoBehaviour
 {
@@ -23,6 +25,10 @@ public class Player : MonoBehaviour
     private Collider2D playerCollider;
     [SerializeField]
     private SpriteRenderer playerSpriteRenderer;
+    [SerializeField]
+    private Text playerAddressText;
+    [SerializeField]
+    private PhotonView playerView;
 
     [Header("Effects")]
     [SerializeField]
@@ -55,6 +61,7 @@ public class Player : MonoBehaviour
     private bool onGround = false;
     private int directionFacing = -1;
     private PlayerMetadata metadata;
+    private Camera cam;
 
     #endregion
 
@@ -81,6 +88,21 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Public Methods
+
+    public PhotonView GetPhotonView()
+    {
+        return playerView;
+    }
+
+    public void SetCamera(Camera cam1)
+    {
+        cam = cam1;
+    }
+
+    public Camera GetCamera()
+    {
+        return cam;
+    }
 
     public void SetGameRunning(bool status)
     {
@@ -163,6 +185,7 @@ public class Player : MonoBehaviour
         playerShieldScript.SetShieldTime(meta.GetShieldTime());
         playerThrowScript.SetThrowableType(meta.GetThrowableType());
         playerSpriteRenderer.sprite = meta.GetPlayerSprite();
+        playerAddressText.text = meta.GetWallet();
     }
 
     public PlayerMetadata GetPlayerMetadata()

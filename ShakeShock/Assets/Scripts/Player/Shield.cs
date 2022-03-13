@@ -120,17 +120,17 @@ public class Shield : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1) && GameManager.main.IsGameRunning() && player.GetAllowInput() && currentShield > 0)
+        if (Input.GetMouseButton(1) && GameManager.main.IsGameRunning() && player.GetAllowInput() && currentShield > 0 && player.GetPhotonView().IsMine)
         {
             ProcessInput();
         }
-        else if (shieldEnabled == true)
+        else if (shieldEnabled == true && player.GetPhotonView().IsMine)
         {
             HideShield();
             DisableShield();
             shieldEnabled = false;
         }
-        else
+        else if (player.GetPhotonView().IsMine)
         {
             if (!shieldBroken)
             {
@@ -138,7 +138,10 @@ public class Shield : MonoBehaviour
             }
         }
 
-        UpdateSlider();
+        if (player.GetPhotonView().IsMine)
+        {
+            UpdateSlider();
+        }
     }
 
     #endregion

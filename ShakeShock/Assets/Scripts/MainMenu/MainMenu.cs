@@ -10,8 +10,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviourPunCallbacks
 {
     #region Inspector Fields
 
@@ -30,6 +31,18 @@ public class MainMenu : MonoBehaviour
     private GameObject statsButtonGameObject;
     [SerializeField]
     private GameObject notEnoughTokensButtonGameObject;
+    [SerializeField]
+    private GameObject createRoomButtonGameObject;
+    [SerializeField]
+    private GameObject createRoomWagerPanelGameObject;
+    [SerializeField]
+    private GameObject createRoomWagerRoomIdGameObject;
+    [SerializeField]
+    private GameObject joinRoomButtonGameObject;
+    [SerializeField]
+    private GameObject joinRoomInputPanelGameObject;
+    [SerializeField]
+    private GameObject roomBackButton;
 
     [Header("DropDown")]
     [SerializeField]
@@ -61,11 +74,25 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Text statsDashText;
 
+    [Header("Rooms")]
+    [SerializeField]
+    private InputField etherWagerInputField;
+    [SerializeField]
+    private InputField roomJoinInputField;
+    [SerializeField]
+    private Text createRoomText;
+
+    [Header("Debug")]
+    [SerializeField]
+    private bool debugMode;
+
     #endregion
 
     #region Run-time Fields
 
     private bool walletConnected;
+    const string glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private bool addedPlayer;
 
     #endregion
 
@@ -74,10 +101,12 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ShowHideMainScreen(false);
+        ShowHideMainScreen(true);
+        ShowHideGameSetup(false);
         loadingGameObject.SetActive(false);
         statsPanelGameObject.SetActive(false);
         notEnoughTokensPanelGameObject.SetActive(false);
+        connectWalletButtonGameObject.SetActive(false);
     }
 
     #endregion
@@ -97,9 +126,11 @@ public class MainMenu : MonoBehaviour
     public void OnClickPlayButton()
     {
         // Check to make sure the wallet is connected
-        if (walletConnected)
+        if (walletConnected || debugMode)
         {
-            SceneManager.LoadScene(1);
+            GenerateRandomRoomString();
+            ShowHideGameSetup(true);
+            ShowHideMainScreen(false);
         }
     }
 
@@ -117,7 +148,7 @@ public class MainMenu : MonoBehaviour
         PlayerMetadata option2 = GameManager.main.GetPlayerMetadata(0); // Get the index
 
         GameManager.main.DeletePlayerMetadata(player);
-        // Update the value here
+        // Update the value here like this
         // player.SetSpeedMultiplier(new value)
         
         // Add it back
@@ -153,6 +184,36 @@ public class MainMenu : MonoBehaviour
         notEnoughTokensPanelGameObject.SetActive(false);
     }
 
+    public void OnClickCreateRoomButton()
+    {
+        // Interact with escrow contract here:
+
+        // Get the ether wager like this:
+        string ether = etherWagerInputField.text;
+
+        // Network stuff
+        PhotonNetwork.CreateRoom(createRoomText.text);
+        CreateNewPlayerMetadata();
+
+        StartCoroutine(WaitToJoinRoom());
+    }
+
+    public void OnClickCloseSetupButton()
+    {
+        ShowHideMainScreen(true);
+        ShowHideGameSetup(false);
+    }
+
+    // We're joining with another player
+    public void OnClickJoinRoomButton()
+    {
+        // Need to interact with the escrow contract here as well to match the other user
+
+        PhotonNetwork.JoinRoom(roomJoinInputField.text);
+        CreateNewPlayerMetadata();
+        StartCoroutine(WaitToJoinRoom());
+    }
+
     #endregion
 
     #region Private Methods
@@ -181,6 +242,7 @@ public class MainMenu : MonoBehaviour
         walletConnected = true;
         loadingGameObject.SetActive(false);
         ShowHideMainScreen(true);
+        GameManager.main.SetWalletAddress("Give the game manager the wallet address pls");
 
         // Need to set what throwable the player can select
         List<string> throwableList = new List<string> { "Basic Apple", "Explosive Apple", "Electric Apple" };
@@ -225,9 +287,32 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(SetPlayerImage("This will be the IPFS URL????", player));
     }
 
+    // Call this when the user doesn't have enough tokens to upgrade
     private void NotEnoughTokens()
     {
         notEnoughTokensPanelGameObject.SetActive(true);
+    }
+
+    private void ShowHideGameSetup(bool status)
+    {
+        createRoomButtonGameObject.SetActive(status);
+        createRoomWagerPanelGameObject.SetActive(status);
+        createRoomWagerRoomIdGameObject.SetActive(status);
+        joinRoomButtonGameObject.SetActive(status);
+        joinRoomInputPanelGameObject.SetActive(status);
+        roomBackButton.SetActive(status);
+    }
+
+    private void GenerateRandomRoomString()
+    {
+        int charAmount = 10;
+        string myString = "";
+        for (int i = 0; i < charAmount; i++)
+        {
+            myString += glyphs[Random.Range(0, glyphs.Length)];
+        }
+
+        createRoomText.text = myString;
     }
 
     #endregion
@@ -244,6 +329,8 @@ public class MainMenu : MonoBehaviour
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.Log(www.error);
+            GameManager.main.AddNewPlayerMetadata(metaData);
+            addedPlayer = true;
         }
         else
         {
@@ -255,7 +342,18 @@ public class MainMenu : MonoBehaviour
             // Add the texture retreieved to the metadata and submit to the game manager
             metaData.SetPlayerSprite(playerSprite);
             GameManager.main.AddNewPlayerMetadata(metaData);
+            addedPlayer = true;
         }
+    }
+
+    private IEnumerator WaitToJoinRoom()
+    {
+        while (addedPlayer == false)
+        {
+            yield return new WaitForSeconds(1);
+        }
+
+        SceneManager.LoadScene(2);
     }
 
     #endregion

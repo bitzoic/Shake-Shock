@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ExplosiveThrowableApple : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class ExplosiveThrowableApple : MonoBehaviour
 
     private void ExplodeApple()
     {
-        GameObject explosion = Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity);
+        GameObject explosion = PhotonNetwork.Instantiate("Explosion", parentThrowable.transform.position, Quaternion.identity);
         Explosion explosionScript = explosion.GetComponent<Explosion>();
         explosionScript.SetDamage(damage);
         explosionScript.SetPlayerGameobject(parentThrowableScript.GetThrowPlayer());

@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ExplosionDebug : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class ExplosionDebug : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Instantiate(explosionPrefab, mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1)), Quaternion.identity);
+            PhotonNetwork.Instantiate("Explosion", mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1)), Quaternion.identity);
         }
     }
 }
