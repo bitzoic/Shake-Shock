@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ElectricThrowableApple : MonoBehaviour
 {
@@ -78,7 +79,7 @@ public class ElectricThrowableApple : MonoBehaviour
 
     private void ExplodeApple()
     {
-        Instantiate(explosionPrefab, parentThrowable.transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate("ElectricOrb", parentThrowable.transform.position, Quaternion.identity);
         Destroy(parentThrowable);
     }
 

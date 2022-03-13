@@ -74,6 +74,11 @@ public class CanvasManager : MonoBehaviour
         gameStartStopPanel.SetActive(true);
     }
 
+    public void WaitingForPlayers()
+    {
+        gameStartStopText.text = "Waiting for players...";
+    }
+
     #endregion
 
     #region Coroutines

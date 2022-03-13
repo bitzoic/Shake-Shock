@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerThrow : MonoBehaviour
 {
@@ -57,8 +58,13 @@ public class PlayerThrow : MonoBehaviour
 
     private void ProcessInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && player.GetPhotonView().IsMine)
         {
+            if (mainCamera == null)
+            {
+                mainCamera = player.GetCamera();
+            }
+
             Vector2 clickPoint = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
             Vector2 throwDirection = new Vector2(
                 clickPoint.x - player.GetTransform().position.x, 
@@ -71,7 +77,7 @@ public class PlayerThrow : MonoBehaviour
                 playerThrowableGameObject.transform.position.y + (1 * throwDirection.y)
                 );
 
-            GameObject throwable = Instantiate(throwablePrefab, spawnPoint, Quaternion.identity);
+            GameObject throwable = PhotonNetwork.Instantiate("Throwable", spawnPoint, Quaternion.identity);
             Throwable throwableScript = throwable.GetComponent<Throwable>();
 
             throwableScript.SetThrowableType(type);

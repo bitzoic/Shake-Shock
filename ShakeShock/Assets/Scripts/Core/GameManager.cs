@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
@@ -50,7 +51,10 @@ public class GameManager : MonoBehaviour
     private List<Player> players;
     private List<PlayerMetadata> playerMetadata;
     private bool isRunning = false;
+    private bool gameStarted = false;
     private CanvasManager canvasManagerScript;
+    private string walletAddress;
+    private int lastScene;
 
     #endregion
 
@@ -71,33 +75,58 @@ public class GameManager : MonoBehaviour
         playerMetadata = new List<PlayerMetadata>();
         players = new List<Player>();
 
-        // We're in game
-        if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            LoadGame();
-        }
-        // We're in main menu
-        else if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
+        ReloadScene();
 
-        }
+        lastScene = SceneManager.GetActiveScene().buildIndex;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (!debugMode)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            debugGameObject.SetActive(false);
-            //StartCoroutine(WaitToStartGame());
-            canvasManagerScript.StartGame(startGameWaitTime);
+            if (!debugMode)
+            {
+                debugGameObject.SetActive(false);
+                //StartCoroutine(WaitToStartGame());
+                if (PhotonNetwork.CountOfPlayers == 2)
+                {
+                    canvasManagerScript.StartGame(startGameWaitTime);
+                }
+                else
+                {
+                    WaitingForPlayers();
+                }
+            }
+            else
+            {
+                players.Add(debugPlayer);
+                SetCameraTargets();
+                //debugPlayer.SetGameRunning(true);
+                canvasManagerScript.StartGame(startGameWaitTime);
+            }
         }
-        else
+    }
+
+    private void Update()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != lastScene)
         {
-            players.Add(debugPlayer);
-            SetCameraTargets();
-            //debugPlayer.SetGameRunning(true);
-            canvasManagerScript.StartGame(startGameWaitTime);
+            lastScene = SceneManager.GetActiveScene().buildIndex;
+            ReloadScene();
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 2 && gameStarted == false)
+        {
+            if (PhotonNetwork.CountOfPlayers == 2)
+            {
+                canvasManagerScript.StartGame(startGameWaitTime);
+                gameStarted = true;
+            }
+            else
+            {
+                canvasManagerScript.WaitingForPlayers();
+            }
         }
     }
 
@@ -120,6 +149,11 @@ public class GameManager : MonoBehaviour
         }
 
         OnGameOver(loosingPlayer);
+    }
+
+    public void SetWalletAddress(string address)
+    {
+        walletAddress = address;
     }
 
     public bool IsGameRunning()
@@ -181,6 +215,20 @@ public class GameManager : MonoBehaviour
 
     #region Private Methods
 
+    private void ReloadScene()
+    {
+        // We're in game
+        if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            LoadGame();
+        }
+        // We're in main menu
+        else if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+
+        }
+    }
+
     private void SetCameraTargets()
     {
         foreach (Player player in players)
@@ -194,8 +242,14 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void WaitingForPlayers()
+    {
+        canvasManagerScript.WaitingForPlayers();
+    }
+
     private void LoadGame()
     {
+        Camera mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         spawnLocation1 = GameObject.Find("SpawnLocation1").transform;
         spawnLocation2 = GameObject.Find("SpawnLocation2").transform;
@@ -214,27 +268,27 @@ public class GameManager : MonoBehaviour
 
         if (playerMetadata.Count > 0)
         {
-            GameObject playerGameObject1 = Instantiate(
-                Resources.Load("Player"), 
+            GameObject playerGameObject1 = PhotonNetwork.Instantiate(
+                "Player", 
                 spawnLocation1.position, 
                 Quaternion.identity
-                ) as GameObject;
+                );
             Player player1Script = playerGameObject1.GetComponent<Player>();
-            player1Script.LoadMetadata(playerMetadata[0]);
-            players.Add(player1Script);
+
+            PlayerMetadata thisPlayerMetadata = null;
+
+            foreach (PlayerMetadata data in playerMetadata)
+            {
+                if (data.GetWallet() == walletAddress)
+                {
+                    thisPlayerMetadata = data;
+                }
+            }
+
             cameraFollow.AddToTargetList(player1Script.GetTransform());
-        }
-        if (playerMetadata.Count > 1)
-        {
-            GameObject playerGameObject2 = Instantiate(
-                Resources.Load("Player"), 
-                spawnLocation2.position, 
-                Quaternion.identity
-                ) as GameObject;
-            Player player2Script = playerGameObject2.GetComponent<Player>();
-            player2Script.LoadMetadata(playerMetadata[2]);
-            players.Add(player2Script);
-            cameraFollow.AddToTargetList(player2Script.GetTransform());
+            player1Script.SetCamera(mainCamera);
+            players.Add(player1Script);
+            player1Script.LoadMetadata(thisPlayerMetadata);
         }
     }
 

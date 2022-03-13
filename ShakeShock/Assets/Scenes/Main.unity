@@ -648,6 +648,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1723374113}
     m_Modifications:
+    - target: {fileID: -4404307806110812543, guid: 579d96db917f6b946a431e195679efbb, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1654481888401608, guid: 579d96db917f6b946a431e195679efbb, type: 3}
       propertyPath: m_Name
       value: Explosion
@@ -3374,6 +3378,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1723374113}
     m_Modifications:
+    - target: {fileID: -4660885706646242560, guid: c4a71479ad21c9d409a4a08d57a5989d, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2270403880973497697, guid: c4a71479ad21c9d409a4a08d57a5989d, type: 3}
       propertyPath: m_Name
       value: ElectricOrb
@@ -3448,16 +3456,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1048387206}
     - target: {fileID: 1481049927, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
-      propertyPath: type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1481049927, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1048387206}
     - target: {fileID: 1621434512, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4751696512389629288, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
+      propertyPath: sceneViewId
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5161004017801417913, guid: d9835e9a57f9ca0499f9d2a6dc6abdc5, type: 3}
       propertyPath: m_Name
@@ -3516,6 +3524,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1723374113}
     m_Modifications:
+    - target: {fileID: 2605879701322622813, guid: dbd6416bb54c2a3408261b62d4a7834e, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6168193738847571731, guid: dbd6416bb54c2a3408261b62d4a7834e, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3581,6 +3593,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1487490821842237912, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2611938565011969323, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
+      propertyPath: sceneViewId
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7981852446922423287, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3624,6 +3644,10 @@ PrefabInstance:
     - target: {fileID: 7981852446922423287, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512585644789332993, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
+      propertyPath: debugMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8512585644789332993, guid: c72e4b5bc26c9c541ab9789e5cee4ea0, type: 3}
       propertyPath: debugPlayer

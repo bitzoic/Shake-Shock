@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -81,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (GameManager.main.IsGameRunning() && player.GetAllowInput())
+        if (GameManager.main.IsGameRunning() && player.GetAllowInput() && player.GetPhotonView().IsMine)
         {
             ProcessStrafing();
             ProcessJump();
@@ -91,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (GameManager.main.IsGameRunning() && player.GetAllowInput())
+        if (GameManager.main.IsGameRunning() && player.GetAllowInput() && player.GetPhotonView().IsMine)
         {
             ProcessMovement();
         }
